@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Webslesson Tutorial</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <link
+    rel="stylesheet"
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+    integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+    crossorigin="anonymous"
+  />
+  </head>
+  <body style="background-color: ghostwhite;">
+    <nav
+    class="navbar navbar-light bg-light"
+    style="background-color: cadetblue;"
+  >
+    <span class="navbar-brand mb-0 h1"
+      ><h1 style="margin-top: -14px;font-family:verdana; margin-left: 416px;">
+     Lottery Draw Engine
+      </h1>
+
+      <!-- <a
+        class="btn btn-primary"
+        style="float: right; margin-right: -68%; margin-top: -45px;"
+        href="MainPage.html"
+        >Back</a
+      ></span -->
+    
+  </nav>
+    
+    <br />
+    <div
+    style="
+    width: 21%;
+box-shadow: 1px 5px 2px 4px #888888;
+margin-left: 39%;">
+    <form method="post" enctype="multipart/form-data">
+      <div align="center">
+        <a class="btn btn-primary btn-block" href="indexNew.php"><h3>Input User Data</h3></a>
+      </div>
+    </form>
+  </div><br/>
+    <div
+      style="
+           width: 21%;
+    box-shadow: 1px 5px 2px 4px #888888;
+    margin-left: 39%;"
+    >
+      <form method="post" enctype="multipart/form-data">
+        <div align="center">
+          <a class="btn btn-primary btn-block" href="Result.html"><h3>Generate Result</h3></a>
+        </div>
+      </form>
+    </div>
+    <br />
+
+    
+    <div
+      style="
+        width: 21%;
+    box-shadow: 1px 5px 2px 4px #888888;
+    margin-left: 39%;
+      "
+    >
+      <form method="post" enctype="multipart/form-data">
+        <div align="center">
+          <a class="btn btn-primary btn-block"onclick="checkDay();"><h3>Show Result</h3></a>
+        </div>
+      </form>
+    </div>
+    <script>
+      function checkDay() {
+        var d = new Date();
+        var weekday = new Array(7);
+        weekday[0] = "Sunday";
+        weekday[1] = "Monday";
+        weekday[2] = "Tuesday";
+        weekday[3] = "Wednesday";
+        weekday[4] = "Thursday";
+        weekday[5] = "Friday";
+        weekday[6] = "Saturday";
+
+        var n = weekday[d.getDay()];
+        // window.location = "Winner.html";
+        if (n != "Saturday") {
+          alert("Result can be view only on Saturday");
+        } else {
+          window.location = "Winner.html";
+        }
+      }
+    </script>
+  </body>
+</html>
