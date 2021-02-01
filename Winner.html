@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Webslesson Tutorial</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+      integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="css/dataTables.bootstrap.min.css" />
+  </head>
+  <body
+    onload="javascript:functionToBeExecuted()"
+    style="background-color: ghostwhite;"
+  >
+    <nav
+      class="navbar navbar-light bg-light"
+      style="background-color: cadetblue;"
+    >
+      <span class="navbar-brand mb-0 h1"
+        ><h1 style="margin-top: -14px; margin-left: 466px;">
+          Lottery Draw Engine
+        </h1>
+
+        <a
+          class="btn btn-primary"
+          style="float: right; margin-right: -25%; margin-top: -45px;"
+          href="MainPage.html"
+          >Back</a
+        ></span
+      >
+    </nav>
+    <div>
+      <h3 style="margin-left: 44%;">
+        Winner List <ion-icon name="trophy-outline"></ion-icon>
+      </h3>
+    </div>
+    <table
+      id="customers"
+      style="width: 70%; margin-left: 211px; border-style: solid;"
+      class="table table-hover"
+    >
+      <tr>
+        <th>Customer Name</th>
+        <th>Grid Number</th>
+        <th>Lottery Id</th>
+        <th>Matched Lotter Number</th>
+        <th>Matched Lucky Number</th>
+        <th>Rank</th>
+      </tr>
+    </table>
+    <script src="js/jquery.dataTables.min.js" type="text/javascript"></script>
+    <script
+      src="js/dataTables.bootstrap.min.js"
+      type="text/javascript"
+    ></script>
+    <script type="text/javascript">
+      function functionToBeExecuted() {
+        $.ajax({
+          url: "http://localhost/lotto/Winner.php",
+          method: "POST",
+          dataType: "json",
+          data: {
+            key: "Select",
+          },
+          success: function (response) {
+            if (response == null) {
+              alert("Failed");
+            } else {
+              response.sort((a, b) =>
+                a.MatcingLotterNumber > b.MatcingLotterNumber ? -1 : 1
+              );
+              debugger;
+              var maxcount = response[0].MatcingLotterNumber;
+              var array = [];
+              var isfinish = true;
+              var change = true;
+              var tempindex = maxcount;
+              while (isfinish) {
+                if (tempindex == maxcount) {
+                  var data = response.filter(function (result) {
+                    var temp =
+                      result.MatcingLotterNumber === maxcount &&
+                      result.LuckyNumber == change;
+                    return temp;
+                  });
+                } else {
+                  var data = response.filter(function (result) {
+                    return result.MatcingLotterNumber === tempindex;
+                  });
+                }
+
+                if (change == false) {
+                  tempindex -= 1;
+                } else {
+                  change = false;
+                }
+                if (data.length > 0) {
+                  array.push(data);
+                }
+
+                if (tempindex == 0) {
+                  isfinish = false;
+                }
+              }
+              var rule = array;
+              var rank = 0;
+              console.log(array);
+              var mytable = "<tr>";
+              for (var i = 0; i < rule.length; i++) {
+                if (rule[i].length > 0) {
+                  for (var j = 0; j < rule[i].length; j++) {
+                    var valdiv = rule[i];
+                    if (valdiv.length > 1) {
+                      // for (var k = 0; k < valdiv.length; k++) {
+                      rank = j == 0 ? rank + 1 : rank;
+                      mytable += "<td>" + rule[i][j].CustomerName + "</td>";
+                      mytable += "<td>" + rule[i][j].GridNo + "</td>";
+                      mytable += "<td>" + rule[i][j].LotteryId + "</td>";
+                      mytable +=
+                        "<td>" + rule[i][j].MatcingLotterNumber + "</td>";
+                      mytable += "<td>" + rule[i][j].LuckyNumber + "</td>";
+                      mytable += "<td>" + rank + "</td>";
+                      mytable += "</tr><tr>";
+                      // }
+                    } else {
+                      for (var l = 0; l < valdiv.length; l++) {
+                        rank = rank + 1;
+                        mytable += "<td>" + rule[i][l].CustomerName + "</td>";
+                        mytable += "<td>" + rule[i][l].GridNo + "</td>";
+                        mytable += "<td>" + rule[i][l].LotteryId + "</td>";
+                        mytable +=
+                          "<td>" + rule[i][l].MatcingLotterNumber + "</td>";
+                        mytable += "<td>" + rule[i][l].LuckyNumber + "</td>";
+                        mytable += "<td>" + rank + "</td>";
+                        mytable += "</tr><tr>";
+                      }
+                    }
+                  }
+                }
+              }
+
+              $("#customers").append(mytable);
+            }
+          },
+          error: function (xhr, status, error) {
+            var err = eval("(" + xhr.responseText + ")");
+            alert(err.Message);
+          },
+        });
+      }
+    </script>
+  </body>
+</html>
